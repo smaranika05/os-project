@@ -1,0 +1,94 @@
+2.	Algorithms 
+ 
+• Algorithm to find the minimum arrival time of the process i.e.  
+ 
+o	In this function the priority of the process is assumed to be (-1) whichever process has been executed completely. 
+o	In this function it’s also checked that if the two process arrives at the same time then which process is given more priority. 
+ 
+# all the required variables are declared globally 
+void findMinTime(struct Process *obj) 
+{ 
+	 	int min_arrtime=65537; 
+	 	for(i=0;i<n;i++) 
+	 	{ 
+	 	 	if(obj[i].priority== -1) 
+	 	 	 	continue; 
+	 	 	if(min_arrtime==obj[i].arr_t) 
+	 	 	{ 
+	 	 	 	if(obj[i].estRun_t<runTime) 
+	 	 	 	{ 
+ 	 	 	 	strcpy(cur_process,obj[i].process);  	 	 	 	runTime=obj[i].estRun_t; 
+	 	 	 	 	min_arrtime=obj[i].arr_t; 	 	 
+	 	 	 	} 
+	 	 	} 
+	 	 	else if(min_arrtime>obj[i].arr_t) 
+	 	 	{ 
+ 	 	 	strcpy(cur_process,obj[i].process);  	 	 	runTime=obj[i].estRun_t; 
+	 	 	 	min_arrtime=obj[i].arr_t; 
+	 	 	} 
+ 	 
+	 	} 
+	 	cur_time=min_arrtime; 
+	 	return; 
+} 
+• Algorithm to find the maximum priority, if the current clock time of the cpu is greater than atleast one of the processes  
+ 
+void findMaxPriority(struct Process *obj) 
+{ 
+ 	double max_priority=-10000000.0;  	for(i=0;i<n;i++) 
+	 	{ 
+	 	 	if(obj[i].priority== -1) 
+	 	 	 	continue; 
+ 
+	 	 	else if(max_priority<obj[i].priority) 
+	 	 	 	{ 
+	 	 	 	 	max_priority=obj[i].priority; 
+	 	 	 	 	strcpy(cur_process,obj[i].process); 
+	 	 	 	} 
+	 	} 
+	 	return; 
+} 
+•	After every process execution we have to calculate the Turnaround time of that process and have to set the priority of the process to (-1), algorithm for that is:  
+	 	for(i=0;i<n;i++) 
+	 	{ 
+	 	 	if(obj[i].priority!= -1 && strcmp(obj[i].process, cur_process)==0) 
+	 	 	{ 
+	 	 	 	obj[i].priority= -1;    //process already done 
+	 	 	 	obj[i].wait_t=cur_time-obj[i].arr_t;  //new wait time calculation 
+	 	 	 	cur_time=cur_time+(int)obj[i].estRun_t;   // 
+	 	 	 	obj[i].turnAround_t=cur_time-obj[i].arr_t; 
+	 	 	} 
+	 	} 
+•	Algorithm to calculate the priority after every process execution :  for(i=0;i<n;i++) 
+	 	 	 	{ 
+	 	 	 	 	if(obj[i].priority!=-1 && cur_time>obj[i].arr_t) 
+	 	 	 	 	{ 
+ 	 	 	 	 	obj[i].wait_t=cur_time-obj[i].arr_t;  	 	 	 	 	obj[i].priority=1+(obj[i].wait_t/obj[i].estRun_t); 
+	 	 	 	 	} 
+	 	 	 	} 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+3.	Complexity : The complexity of each algorithms given above is of O(n) but since the algorithms are processed after each process execution so it effectively becomes O(n^2).  
+ 
+4.	Boundary conditions /constraints:   
+ 
+•	Any numerical value should be taken under the range of integer i.e. based on the compiler. 
+•	Process name should be taken in the string. 
+•	Time shouldn’t be negative. 
+printf("Enter its Arrival Time: "); 
+ 	 	scanf("%d",&(obj[i].arr_t));  	 	if(obj[i].arr_t<0) 
+	 	 	{ 
+	 	 	 	printf("\n\t\t\ttime in negative error"); 
+	 	 	 	exit(0); 
+	 	 	} 
+•	Burst time shouldn’t be negative. printf("Enter its Burst Time  : "); scanf("%lf",&(obj[i].estRun_t)); 
+if(obj[i].estRun_t<0) 
+	 	 	{ 
+	 	 	 	printf("\n\t\t\tEstimated run time in negative error"); 
+	 	 	 	exit(0); 
+	 	 	} 
